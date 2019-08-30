@@ -228,16 +228,14 @@ module.exports = {
 
 # Create React Components
 
-1. Create TSX files
+1. Create folder structure
 
 ````
 src/
-  components/
-    Greeting.tsx
-  index.tsx
+  components/    
 ````
 
-2. Update src/components/Greeting.tsx
+2. Create src/components/Greeting.tsx
 
 ````
 import * as React from "react";
@@ -251,7 +249,7 @@ export class Greeting extends React.Component<GreetingProps, {}> {
 }
 ````
 
-3. Update src/index.tsx
+3. Create src/index.tsx
 
 Note: The HTML element with id='app' is created by the HTML webpack plugin
 
@@ -385,7 +383,7 @@ module.exports = {
 ````
 "scripts": {
     // ...
-    "start:dev": "node server.js"
+    "start": "node server.js"
   },
 ````
 
@@ -460,7 +458,7 @@ npm run build:dev
 2. Start
 
 ````
-npm run start:dev
+npm start
 ````
 
 3. Open localhost:3000 in a browser and verify 'Hello World!' appears

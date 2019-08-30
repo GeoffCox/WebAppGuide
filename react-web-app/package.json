@@ -6,7 +6,7 @@
   "scripts": {
     "build:dev": "webpack --config webpack.config.js --mode development",
     "build:prod": "webpack --config webpack.config.js --mode production",
-    "start:dev": "node server.js"
+    "start": "node server.js"
   },
   "author": "",
   "license": "ISC",
