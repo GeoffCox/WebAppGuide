@@ -42,14 +42,14 @@ module.exports = {
 1. Install Typescript locally and globally
 
 ````
-npm install electron --save--dev
+npm install electron --save
 ````
 
 # Separate the React application from Electron main
 
-1. Restructure src/ to create two top level folders called app/ and main/
+1. Create app and main subfolders under src/
 
-    Everything that was previously under src/ moves to be under app/
+Everything that was previously under src/ moves to be under app/
 
 ````
     src/
