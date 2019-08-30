@@ -265,7 +265,7 @@ ReactDOM.render(
 );
 ````
 
-# Verify application works
+# Verify the application works
 
 1. Build
 
@@ -282,7 +282,7 @@ index.html
 
 3. Verify 'Hello World!' appears
 
-# Add web server with Hot Module Reloading (HMR)
+# Add Hot Module Reloading (HMR)
 
 1. Install express, middleware, and hmr
 
@@ -290,14 +290,16 @@ index.html
 npm install --save-dev express webpack-dev-middleware webpack-hot-middleware
 ````
 
-2. Create server.js with self-executing function
+# Create dev server to support HMR
+
+1. Create server.js with a self-executing function
 
 ````
 (function() {
 })();  
 ````
 
-3. Update server.js to compile using webpack
+2. Update server.js to compile using webpack
 
 ````
 (function() {
@@ -311,7 +313,7 @@ npm install --save-dev express webpack-dev-middleware webpack-hot-middleware
 })();  
 ````
 
-4. Update server.js to wire up the middleware
+3. Update server.js to wire up the middleware
 
 ````
 (function() {
@@ -334,7 +336,7 @@ npm install --save-dev express webpack-dev-middleware webpack-hot-middleware
 })();  
 ````
 
-5. Update server.js to host the application on a server and port
+4. Update server.js to host the application on a server and port
 
 ````
 (function() {
@@ -349,7 +351,9 @@ if (require.main === module) {
 }
 ````
 
-6. Update webpack.config.js to add MHR middleware to the entry point.
+# Configure webpack for HMR
+
+1. Update webpack.config.js to add MHR middleware to the entry point.
 
 ````
 module.exports = {
@@ -363,7 +367,8 @@ module.exports = {
   },
 }
 ````
-7. Update webpack.config.js to add HMR middleware to the plugins
+
+2. Update webpack.config.js to add HMR middleware to the plugins
 
 ````
 var webpack = require('webpack');
@@ -377,6 +382,8 @@ module.exports = {
   ],
 }
 ````
+
+# Update the build to start the dev server
 
 8. Update package.json to add start:dev script
 
@@ -447,7 +454,7 @@ if (module.hot) {
 }
 ````
 
-# Verify HMR works
+# Verify application with HMR works
 
 1. Build
 
