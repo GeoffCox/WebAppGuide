@@ -8,23 +8,6 @@ This contains the steps to go from nothing to a ready-to-develop react web appli
 1. Node.js (https://nodejs.org) of v8.16.0 or later.
 2. Recommended: VSCode or other IDE.
 
-## Technology Stack
-
-Each technology was chosen based on its capability for developers quickly build reliable applications quickly, create modern user interface, not being overly opinionated, and in cases where there are alternative libraries with similar functionality - being actively maintained and having a growing set of supporting libraries (i.e. popular).
-
-React - A library for building componentized web UI
-TypeStyle - A library for incorporating style into React components
-MobX - An observer/observable library for modeling application state and React components can react to changes.
-
-## Developer Tooling
-
-NPM - Node Package Manager is the defacto package manager for web application development.
-Typescript - Provides compile time type safety
-Webpack - A chain of plug-ins for orchestrating compilation, bundling, minimization, etc.
-
-
-
-
 # Create application
 
 1. Create the directory and initialize package.json
@@ -120,7 +103,7 @@ module.exports = {
 };
 ````
 
-4. Update webpack.config.js to add input, source map, and output to module.exports
+4. Update webpack.config.js to add entry and output to module.exports
 
 ````
 const { join } = require("path");
