@@ -1,7 +1,7 @@
 # Electron React Web Application
 
 # Getting Started
-This contains the steps to go from a react web application to run within Electron.
+This contains the steps to go from a react web application to running within Electron.
 
 ## Prerequisites
 
@@ -39,7 +39,7 @@ module.exports = {
 
 # Add Electron
 
-1. Install Typescript locally and globally
+1. Install Electron
 
 ````
 npm install electron --save
@@ -377,3 +377,19 @@ npm install --save-dev npm-run-all
     "start": "electron dist/main_bundle.js"
   },
 ````
+
+# Verify the application works
+
+1. Build
+
+````
+npm run build:dev
+````
+
+2. Run
+
+````
+npm start
+````
+
+The electron application should launch and then when bundling is finished, 'Hello World!' should appear.
