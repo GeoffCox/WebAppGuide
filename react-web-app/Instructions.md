@@ -92,7 +92,9 @@ npm install --save-dev awesome-typescript-loader
 npm install --save-dev source-map-loader
 ````
 
-3. Create webpack.config.js with an empty module.exports.
+# Configure webpack
+
+1. Create webpack.config.js with an empty module.exports.
 
 ````
 // This is the object webpack looks at for configuration.
@@ -103,7 +105,7 @@ module.exports = {
 };
 ````
 
-4. Update webpack.config.js to add entry and output to module.exports
+2. Update webpack.config.js to add entry and output to module.exports
 
 ````
 const { join } = require("path");
@@ -121,7 +123,7 @@ module.exports = {
 }
 ````
 
-5. Update webpack.config.js to add typescript and source-map loaders
+3. Update webpack.config.js to add typescript and source-map loaders
 
 ````
 module.exports = {
@@ -149,7 +151,7 @@ module.exports = {
 }
 ````
 
-6. Update webpack.config.js to add the HTML plugin to module.exports
+4. Update webpack.config.js to add the HTML plugin to module.exports
 
 ````
 const HtmlWebpackPlugin = require("html-webpack-plugin");
@@ -179,7 +181,7 @@ module.exports = {
 }
 ````
 
-7. Update webpack.config to handle React as an external library
+5. Update webpack.config to handle React as an external library
 
 ````
 module.exports = {
@@ -195,7 +197,7 @@ module.exports = {
 }
 ````
 
-8. Update webpack.config.js to add development and bundling configuration
+6. Update webpack.config.js to add development and bundling configuration
 
 ````
 module.exports = {
@@ -213,7 +215,9 @@ module.exports = {
 }
 ````
 
-9. Update package.json with build script commands.
+# Update build to use  webpack
+
+1. Update package.json with build script commands.
 
 ````
 "scripts": {
