@@ -12,6 +12,10 @@ This contains the steps to go from nothing to a ready-to-develop react web appli
 
 1. Create the directory and initialize package.json
 
+> Use the command line to execute these commands.  Leave the command window open.  
+> You can create a folder of any name you like.  
+> Accept the defaults during npm init.
+
 ````
 mkdir react-web-app
 cd react-web-app
@@ -19,6 +23,8 @@ npm init
 ````
 
 2. Add .gitignore
+
+> Add this file in the same folder as package.json.
 
 ````
 node_modules
@@ -68,12 +74,10 @@ npm install --save react react-dom @types/react @types/react-dom
 
 2. Update tsconfig.json to support JSX
 
+> Add the following within the compilerOptions statement.
+
 ````
-{
-  "compilerOptions": {
-    "jsx": "react"
-  }
-}
+"jsx": "react"
 ````
 
 # Add Webpack
@@ -96,62 +100,69 @@ npm install --save-dev source-map-loader
 
 1. Create webpack.config.js with an empty module.exports.
 
+> Create this file in the same folder as package.json.
+
 ````
 // This is the object webpack looks at for configuration.
 // Webpack doesn't  care about any other javascript in the file.
 // Because this is javascript, you can write functions to help build up the configuration.
-module.exports = {
-  }
-};
+module.exports = {};
 ````
 
-2. Update webpack.config.js to add entry and output to module.exports
+2. Update webpack.config.js to import the path join function.
+
+> Add the following before the module.exports statement.
 
 ````
 const { join } = require("path");
-
-module.exports = {
-
-  // Tells webpack where start walking the dependencies to build a bundle.
-  entry: join(__dirname, "src/index.tsx"),
-
-  // Tells webpack where to output the bundled javascript
-  output: {
-    filename: "bundle.js",
-    path: join(__dirname, "dist")
-  }
-}
 ````
 
-3. Update webpack.config.js to add typescript and source-map loaders
+3. Update webpack.config.js add entry and output statements.
+
+> Add the following inside the module.exports statement.
 
 ````
-module.exports = {
-  
-  // Tells webpack what kind of source maps to produce.
-  // There are a lot of options, but I chose the standalone file option.
-  devtool: "source-map",
+// Tells webpack where start walking the dependencies to build a bundle.
+entry: join(__dirname, "src/index.tsx"),
 
-  // Tells webpack how to run file transformation pipeline of webpack.
-  // Awesome-typescript-loader will run on all typescript files.
-  // Source-map-loader will run on the JS files.
-  module: {
-    rules: [
-      // All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
-      { test: /\.tsx?$/, loaders: ["awesome-typescript-loader"] },
-
-      // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
-      { enforce: "pre", test: /\.js?$/, loader: "source-map-loader" }
-    ]
-  },
-
-  // Tells webpack what file extesions it should look at.
-  resolve: {
-    extensions: [".ts", ".tsx", ".js", ".json"]
-}
+// Tells webpack where to output the bundled javascript
+output: {
+  filename: "bundle.js",
+  path: join(__dirname, "dist")
+},
 ````
 
-4. Update webpack.config.js to add the HTML plugin to module.exports
+4. Update webpack.config.js to add typescript and source-map loaders
+
+> Add the following inside the module.exports statement after the output statement.
+
+````
+// Tells webpack what kind of source maps to produce.
+// There are a lot of options, but I chose the standalone file option.
+devtool: "source-map",
+
+// Tells webpack how to run file transformation pipeline of webpack.
+// Awesome-typescript-loader will run on all typescript files.
+// Source-map-loader will run on the JS files.
+module: {
+  rules: [
+    // All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
+    { test: /\.tsx?$/, loaders: ["awesome-typescript-loader"] },
+
+    // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
+    { enforce: "pre", test: /\.js?$/, loader: "source-map-loader" }
+  ]
+},
+
+// Tells webpack what file extesions it should look at.
+resolve: {
+  extensions: [".ts", ".tsx", ".js", ".json"]
+},
+````
+
+5. Update webpack.config.js to HTML plugin imports.
+
+> Add the following before the module.exports statement and after the path join require statement.
 
 ````
 const HtmlWebpackPlugin = require("html-webpack-plugin");
@@ -162,56 +173,57 @@ const HtmlWebpackTemplate = require("html-webpack-template");
 // makes it automatic to keep the package version in sync with
 // the CDN URL used in the HtmlWebpackPlugin
 const packageJson = require('./package.json');
-
-module.exports = {
-  
-  // Tells the HTML webpack plug-in to use a template and emit dist/index.html
-  plugins: [
-    new HtmlWebpackPlugin({
-      title: "react-web-app",
-      inject: false,
-      template: HtmlWebpackTemplate,
-      appMountId: "app",
-      scripts: [
-        `https://unpkg.com/react@${packageJson.dependencies['react']}/umd/react.production.min.js`,
-        `https://unpkg.com/react-dom@${packageJson.dependencies['react-dom']}/umd/react-dom.production.min.js`
-      ]
-    })
-  ]
-}
 ````
 
-5. Update webpack.config to handle React as an external library
+5. Update webpack.config.js to add the HTML plugin configuration.
+
+> Add the following inside the module.exports statement after the resolve statement.
 
 ````
-module.exports = {
-  
-  // When importing a module whose path matches one of the following, just
-  // assume a corresponding global variable exists and use that instead.
-  // This is important because it allows us to avoid bundling all of our
-  // dependencies, which allows browsers to cache standard libraries like React once.
-  externals: {
-    "react": "React",
-    "react-dom": "ReactDOM"
-  },
-}
+// Tells the HTML webpack plug-in to use a template and emit dist/index.html
+plugins: [
+  new HtmlWebpackPlugin({
+    title: "react-web-app",
+    inject: false,
+    template: HtmlWebpackTemplate,
+    appMountId: "app",
+    scripts: [
+      `https://unpkg.com/react@${packageJson.dependencies['react']}/umd/react.production.min.js`,
+      `https://unpkg.com/react-dom@${packageJson.dependencies['react-dom']}/umd/react-dom.production.min.js`
+    ]
+  })
+],
 ````
 
-6. Update webpack.config.js to add development and bundling configuration
+6. Update webpack.config to handle React as an external library
+
+> Add the following inside the module.exports statement after the plugins statement.
 
 ````
-module.exports = {
-  
-  // When the env is "development", this tells webpack to provide debuggable information in the source maps and turns off some optimizations.
-  mode: process.env.NODE_ENV,
+// When importing a module whose path matches one of the following, just
+// assume a corresponding global variable exists and use that instead.
+// This is important because it allows us to avoid bundling all of our
+// dependencies, which allows browsers to cache standard libraries like React once.
+externals: {
+  "react": "React",
+  "react-dom": "ReactDOM"
+},
+````
 
-  // Tells webpack not to touch __dirname and __filename.
-  // If you run the bundle in node.js it falls back to these values of node.js.
-  // https://github.com/webpack/webpack/issues/2010
-  node: {
-    __dirname: false,
-    __filename: false
-  },
+7. Update webpack.config.js to add development and bundling configuration
+
+> Add the following inside the module.exports statement after the externals statement.
+
+````
+// When the env is "development", this tells webpack to provide debuggable information in the source maps and turns off some optimizations.
+mode: process.env.NODE_ENV,
+
+// Tells webpack not to touch __dirname and __filename.
+// If you run the bundle in node.js it falls back to these values of node.js.
+// https://github.com/webpack/webpack/issues/2010
+node: {
+  __dirname: false,
+  __filename: false
 }
 ````
 
@@ -219,16 +231,18 @@ module.exports = {
 
 1. Update package.json with build script commands.
 
+> Replace the test statement inside the scripts statement with the following.
+
 ````
-"scripts": {
-    "build:dev": "webpack --config webpack.config.js --mode development",
-    "build:prod": "webpack --config webpack.config.js --mode production"
-}
+"build:dev": "webpack --config webpack.config.js --mode development",
+"build:prod": "webpack --config webpack.config.js --mode production"
 ````
 
 # Create React Components
 
 1. Create folder structure
+
+> Create the src folder in the same folder as package.json.
 
 ````
 src/
@@ -251,7 +265,7 @@ export class Greeting extends React.Component<GreetingProps, {}> {
 
 3. Create src/index.tsx
 
-Note: The HTML element with id='app' is created by the HTML webpack plugin
+> Notice the HTML element with id='app' matches the configuration of the HTML webpack plugin.
 
 ````
 import * as React from "react";
@@ -292,7 +306,7 @@ npm install --save-dev express webpack-dev-middleware webpack-hot-middleware
 
 # Create dev server to support HMR
 
-1. Create server.js with a self-executing function
+1. Create server.js with a immediately executing function (IEF)
 
 ````
 (function() {
@@ -301,48 +315,43 @@ npm install --save-dev express webpack-dev-middleware webpack-hot-middleware
 
 2. Update server.js to compile using webpack
 
-````
-(function() {
-  // Create & configure a webpack compiler
-  var webpack = require('webpack');
-  var webpackConfig = require(process.env.WEBPACK_CONFIG ? process.env.WEBPACK_CONFIG : './webpack.config.js');
+> Add the following within the function.
 
-  // Configure to always run in development mode when running local server
-  var appWebpackConfig = Object.assign(webpackConfig, { mode: "development"});
-  var compiler = webpack(appWebpackConfig);
-})();  
+````
+// Create & configure a webpack compiler
+var webpack = require('webpack');
+var webpackConfig = require(process.env.WEBPACK_CONFIG ? process.env.WEBPACK_CONFIG : './webpack.config.js');
+
+// Configure to always run in development mode when running local server
+var appWebpackConfig = Object.assign(webpackConfig, { mode: "development"});
+var compiler = webpack(appWebpackConfig); 
 ````
 
 3. Update server.js to wire up the middleware
 
+> Add the following within the function and after the compiler variable declaration.
+
 ````
-(function() {
+// Attach the dev middleware to the compiler & the server
+app.use(require("webpack-dev-middleware")(compiler, {
+  headers: {
+      "Access-Control-Allow-Origin": "*"
+  }, 
+  lazy: false,
+  publicPath: appWebpackConfig.output.publicPath,
+  noInfo: false,
+  stats: { colors: true }
+}));
 
-  // ...
-
-  // Attach the dev middleware to the compiler & the server
-  app.use(require("webpack-dev-middleware")(compiler, {
-    headers: {
-        "Access-Control-Allow-Origin": "*"
-    }, 
-    lazy: false,
-    publicPath: appWebpackConfig.output.publicPath,
-    noInfo: false,
-    stats: { colors: true }
-  }));
-
-  // Attach the hot middleware to the compiler & the server
-  app.use(require("webpack-hot-middleware")(compiler));
-})();  
+// Attach the hot middleware to the compiler & the server
+app.use(require("webpack-hot-middleware")(compiler));
 ````
 
 4. Update server.js to host the application on a server and port
 
-````
-(function() {
-    // ...
-})();  
+> Add the following after the function.
 
+````
 if (require.main === module) {
   var server = http.createServer(app);
   server.listen(process.env.PORT || 3000, function() {
@@ -355,43 +364,41 @@ if (require.main === module) {
 
 1. Update webpack.config.js to add MHR middleware to the entry point.
 
-````
-module.exports = {
-  
-  // Tells webpack where start walking the dependencies to build a bundle.
-  entry: {
-    app: [
-      "webpack-hot-middleware/client", 
-      join(__dirname, "src/index.tsx")
-    ]
-  },
-}
-````
+> Replace the entry statement inside module.exports with the following.
 
-2. Update webpack.config.js to add HMR middleware to the plugins
+````
+// Tells webpack where start walking the dependencies to build a bundle.
+entry: {
+  app: [
+    "webpack-hot-middleware/client", 
+    join(__dirname, "src/index.tsx")
+  ]
+},
+````
+2. Update webpack.config.js to add webpack imports.
+
+> Add the following before the module.exports statement
 
 ````
 var webpack = require('webpack');
+````
 
-module.exports = {
-  
-  // Tells the HTML webpack plug-in to use a template and emit dist/index.html
-  plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-    // ...
-  ],
-}
+3. Update webpack.config.js to add HMR middleware to the plugins
+
+> Add the following inside the module.exports plugins statement as the first entry in the array of plugins.
+
+````
+new webpack.HotModuleReplacementPlugin(),
 ````
 
 # Update the build to start the dev server
 
-8. Update package.json to add start:dev script
+1. Update package.json to add start:dev script
+
+> Add the following within the scripts statement after the build:dev and build:prod statements.
 
 ````
-"scripts": {
-    // ...
-    "start": "node server.js"
-  },
+"start": "node server.js"
 ````
 
 # Add HMR aware React Components
@@ -414,6 +421,8 @@ export class App extends React.Component<{}, {}> {
 ````
 
 2. Update index.tsx to support HMR
+
+> Replace the code in index.tsx with the following.
 
 ````
 import * as React from "react";
