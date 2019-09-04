@@ -1,12 +1,23 @@
 # React Web Application
 
 # Getting Started
-This contains the steps to go from nothing to a ready-to-develop react web application.  
+This contains the steps to go from nothing to a ready-to-develop react web application.
 
 ## Prerequisites
 
 1. Node.js (https://nodejs.org) of v8.16.0 or later.
 2. Recommended: VSCode or other IDE.
+
+## Sequence
+
+These instructions focus on getting your project and build set up.  If you are used to a complete integrated experience like Visual Studio and .NET development, then the distributed and disconnected nature of web development can be a shock and a barrier to getting started.  Here's what we'll do in this guide:
+
+1. Create the initial web application using Node Package Manager (NPM).  NPM is called from the command-line throughout this guide to download and add packages to your project.  Packages can be source code libraries for the application, but also scripts and tools for the build process.
+2. Install and configure the TypeScript compile.
+3. Add the React framework to the project so we can create UI component.
+4. Add and configure Webpack so we can have a build that compiles Typescript, bundles Javascript, provides debugging source maps, and creates our HTML home page for the applicaiton.
+5. Write some very basic React components so we can see the application working.
+6. Add and configure Hot Module Reloading (HMR) so that when we change code it is immediately reflected in the web application without having to manually recompile and refresh the web browser.
 
 # Create application
 
