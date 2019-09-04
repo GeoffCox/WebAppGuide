@@ -37,7 +37,7 @@ cd react-web-app
 npm init
 ```
 
-2. Add .gitignore
+2. Add the .gitignore file
 
 > Add this file in the same folder as package.json.
 
@@ -488,6 +488,8 @@ if (module.hot) {
 
 # Verify application with HMR works
 
+> The Chrome browser works with HMR to refresh the page automatically, but the Edge browser does not.  I recommend using Chrome to verify HMR is working properly.
+
 1. Build
 
 ```batchfile
@@ -500,10 +502,9 @@ npm run build:dev
 npm start
 ```
 
-3. Open localhost:3000 in a browser and verify 'Hello World!' appears
+3. Open localhost:3000 in a Chrome and verify 'Hello World!' appears
 
 4. Modify src/App.tsx and change 'World' to 'HMR'. Save the changes.
 
-5. Verify 'Hello HMR!' appears automatically.  
+5. Verify 'Hello HMR!' now appears in the browser (without having to refresh) 
 
-> Note: Chrome will refresh automatically. Edge requires manual refresh.
