@@ -1,28 +1,35 @@
-# Electron React Web Application
+# Electron React Web Application Guide
 
-# Getting Started
-This contains the steps to go from a react web application to running within Electron.
+This contains the steps update the react-web-app to run within Electron.
 
-## Prerequisites
+## Sequence
 
-1. Start with a copy of the react-web-application
-2. Recommended: VSCode IDE.
+These instructions focus on adding Electron and reconfiguring webpack and HMR to work within Electron. Electron has a lot of additional capability for interacting with Windows, Apple, and Linux operating systems that is not covered here.  
 
-# Update the application name
+Here's what we'll do in this guide:
 
-1. Update package.json
+1. Add electron to the application.
+2. Restructure the source to separate the Electron and React pieces.
+3. Update webpack to have separate bundles for Electron and React.
+4. Update the HMR server to use the electron entry point.
 
-````
+# Make a copy the React web application
+
+1. Start with a copy of the react-web-app
+
+2. Update package.json to rename the application.
+
+```json
 {
   "name": "electron-react-web-app",
 
   //...
 }
-````
+```
 
-2. Update webpack.config.js
+3. Update webpack.config.js to rename the page title.
 
-````
+```js
 module.exports = {
   //...
 
@@ -35,23 +42,23 @@ module.exports = {
         })
     ],
 };
-````
+```
 
 # Add Electron
 
 1. Install Electron
 
-````
+```batchfile
 npm install electron --save
-````
+```
 
 # Separate the React application from Electron main
 
 1. Create app and main subfolders under src/
 
-Everything that was previously under src/ moves to be under app/
+> Move everything that was previously under src/ within the app/ subfolder.
 
-````
+```
     src/
         app/
             components/
@@ -59,14 +66,15 @@ Everything that was previously under src/ moves to be under app/
               Greeting.tsx
             index.tsx
         main/
-````
+```
 
 2. Update webpack.config.js to create two entry points for webpack: one for electron main and one for the react application.
 
-Note: module.exports changes from an single entry point object to an array of entry points.
-Move everything that was in the single entry point to the React application entry point.
+> It is important to notice that module.exports changes from an single entry point object to an array of entry points.
 
-````
+> Move everything that was in the previous entry point into the to the React application entry point.
+
+```js
 module.exports = [
   // --- Electron Main ---
   {},
@@ -75,36 +83,39 @@ module.exports = [
     //...
   }
 ];
-````
+```
 
 # Create the Electron main function
 
-1. Create src/main/main.ts with the application, main window, and browser window properties and entry point.
+1. Create src/main/main.ts
 
-````
+> This main function uses Electron to create a browser-enabled window that will host the React application. 
+
+> When running in development mode, it will use the web page from the HMR server.js.
+
+> The main function handles events to help the application quit when the react application window is closed.
+
+1. Create src/main/main.ts
+
+```ts
 import { App, BrowserWindow } from "electron";
-
-export default class Main {
-  static mainWindow: BrowserWindow | null;
-  static application: App;
-  static BrowserWindow : typeof BrowserWindow;  
-
-  static main(app: App, browserWindow: typeof BrowserWindow) {
-    Main.BrowserWindow = browserWindow;
-    Main.application = app;
-  }
-}
-````
-
-2. Update src/main/main.ts with an onReady handler to load the react web page into the main window.
-
-````
-//...
 import * as path from "path";
 import * as url from "url";
 
 export default class Main {
-  //...
+  static mainWindow: BrowserWindow | null;
+  static application: App;
+  static BrowserWindow : typeof BrowserWindow;
+
+  private static onWindowAllClosed() {
+    // On macOS it is common for applications and their menu bar
+    // to stay active until the user quits explicitly with Cmd + Q
+    if (process.platform !== "darwin") Main.application.quit();
+  }
+
+  private static onClose() {
+    Main.mainWindow = null;
+  }
 
   private static onReady() {
     Main.mainWindow = new Main.BrowserWindow({ width: 800, height: 600 });
@@ -120,276 +131,194 @@ export default class Main {
     }
 
     Main.mainWindow.loadURL(mainUrl);
-  }
-
-  //...
-}
-````
-
-3. Update src/main/main.ts with window close handlers
-
-````
-//...
-import * as path from "path";
-import * as url from "url";
-
-export default class Main {
-  private static onWindowAllClosed() {
-    if (process.platform !== "darwin") Main.application.quit();
-  }
-
-  private static onClose() {
-    Main.mainWindow = null;
-  }
-
-  private static onReady() {
-    //...
 
     Main.mainWindow.on("closed", Main.onClose);
   }
 
   static main(app: App, browserWindow: typeof BrowserWindow) {
-    //...
+    Main.BrowserWindow = browserWindow;
+    Main.application = app;
+    Main.application.on("ready", Main.onReady);
     Main.application.on("window-all-closed", Main.onWindowAllClosed);    
   }
 }
-````
+```
 
-4. Create src/main/index.ts to start the electron application using Main
+2. Create src/main/index.ts to start the electron application using Main
 
-````
+```ts
 import { app, BrowserWindow } from "electron";
 import Main from "./main";
 Main.main(app, BrowserWindow);
-````
+```
 
-# Update webpack configuration for the React Application
+# Update webpack / React Application export
 
-2. Update webpack.config.js to have the React entry point match the new location of src/app/index.tsx
+> Each of these steps targets the React application export within module.exports.  The Electron export remains empty until later.
 
-````
-module.exports = [
-  // --- Electron Main ---
-  {},
-  //--- React Application ---
-  {
-    entry: {
-      app: [
-        "webpack-hot-middleware/client", 
-        join(__dirname, "src/app/index.tsx")
-      ]
-    },
-    //...
-  }
-];
- ````
+1. Update webpack.config.js to use src/app/index.tsx
 
-3. Update webpack.config.js to bundle based on the name of the entry point
+> Replace the entry statement with the following:
 
-````
-module.exports = [
-  // --- Electron Main ---
-  {},
-  //--- React Application ---
-  {
-    //...
+```js
+entry: {
+  app: [
+    "webpack-hot-middleware/client", 
+    join(__dirname, "src/app/index.tsx")
+  ]
+},
+```
 
-    // Tells webpack where to output the bundled javascript
-    output: {
-      filename: "[name]_bundle.js",
-      path: join(__dirname, "dist")
-    },
+3. Update webpack.config.js to bundle using the entry point name
 
-    //...
- }
-];
- ````    
+> Replace the output statement with the following.
 
-3. Update webpack.config.js to mark the React entry point as an Electron render process
+```js
+// Tells webpack where to output the bundled javascript
+output: {
+  filename: "[name]_bundle.js",
+  path: join(__dirname, "dist")
+},
+```    
 
-````
-module.exports = [
-  // --- Electron Main ---
-  {},
-  //--- React Application ---
-  {      
-    //...
-    
-    target: "electron-renderer"
-  }
-];
- ````
+3. Update webpack.config.js target the Electron render process
 
-# Update webpack configuration for Electron Main
+> Add the following after the resolve statement.
 
-1. Update webpack.config.js to add entry and output
+```js
+target: "electron-renderer"
+```
 
- ````
-module.exports = [
-  // --- Electron Main ---
-  {
-    entry: {
-      main: join(__dirname, "src/main/index.ts")      
-    },
+# Update webpack / Electron main export
 
-    // Tells webpack where to output the bundled javascript
-    output: {
-      filename: "[name]_bundle.js",
-      path: join(__dirname, "dist")
-    }
-  },
-  //--- React Application ---
-  {      
-    //...   
-  }
-];
- ````
+> Each of these steps targets the Electron application export within module.exports
+
+1. Update webpack.config.js to add entry and output for Electron main
+
+```js
+entry: {
+  main: join(__dirname, "src/main/index.ts")      
+},
+
+// Tells webpack where to output the bundled javascript
+output: {
+  filename: "[name]_bundle.js",
+  path: join(__dirname, "dist")
+},  
+```
 
  2. Update webpack.config.js to add typescript and source-map loaders
 
- ````
- // --- Electron Main ---
-  {
-    // Tells webpack what kind of source maps to produce.
-    // There are a lot of options, but I chose the complete separate file option.
-    devtool: "source-map",
+> Add the following after the output statement.
 
-    //...
+```js
+// Tells webpack what kind of source maps to produce.
+// There are a lot of options, but I chose the complete separate file option.
+devtool: "source-map",
 
-    // Tells webpack how to run file transformation pipeline of webpack.
-    // Awesome-typescript-loader will run on all typescript files.
-    // Source-map-loader will run on the JS files.
-    module: {
-      rules: [
-        // All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
-        {
-          test: /\.tsx?$/,
-          loaders: ["awesome-typescript-loader"],
-          exclude: /node_modules/
-        },
-
-        // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
-        {
-          enforce: "pre",
-          test: /\.js$/,
-          loader: "source-map-loader"
-        }
-      ]
+// Tells webpack how to run file transformation pipeline of webpack.
+// Awesome-typescript-loader will run on all typescript files.
+// Source-map-loader will run on the JS files.
+module: {
+  rules: [
+    // All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
+    {
+      test: /\.tsx?$/,
+      loaders: ["awesome-typescript-loader"],
+      exclude: /node_modules/
     },
 
-    //...
-
-    // Tells webpack what file extesions it should look at.
-    resolve: {
-      extensions: [".ts", ".tsx", ".js", ".json"]
-    },
-  },
-  //--- React Application ---
-  {      
-    //...   
-  }
-];
- ````
+    // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
+    {
+      enforce: "pre",
+      test: /\.js$/,
+      loader: "source-map-loader"
+    }
+  ]
+},
+    
+// Tells webpack what file extesions it should look at.
+resolve: {
+  extensions: [".ts", ".tsx", ".js", ".json"]
+},  
+```
 
  3. Update webpack.config.js to add development and bundling configuration
  
- ````
- // --- Electron Main ---
-  {
-    //...
+> Add the following after the resolve statement.
 
-    // When the env is "development", this tells webpack to provide debuggable information in the source maps and turns off some optimizations.
-    mode: process.env.NODE_ENV,
+```js
+// When the env is "development", this tells webpack to provide debuggable information in the source maps and turns off some optimizations.
+mode: process.env.NODE_ENV,
 
-    //...
+// Tells webpack not to touch __dirname and __filename.
+// If you run the bundle in node.js it falls back to these values of node.js.
+// https://github.com/webpack/webpack/issues/2010
+node: {
+  __dirname: false,
+  __filename: false
+},
+```
 
-    // Tells webpack not to touch __dirname and __filename.
-    // If you run the bundle in node.js it falls back to these values of node.js.
-    // https://github.com/webpack/webpack/issues/2010
-    node: {
-      __dirname: false,
-      __filename: false
-    },
+ 4. Update webpack.config.js to target electron main.
 
-    //...
-  },
-  //--- React Application ---
-  {      
-    //...   
-  }
-];
- ````
+> Add the following after the node statement.
 
- 4. Update webpack.config.js to mark the React entry point as an Electron main process
-
- ````
-  // --- Electron Main ---
-  {
-    //...
-
-     // Tells webpack that we are producing a bundle intended to run as electron's main entry point.
-    target: "electron-main"
-  },
-  //--- React Application ---
-  {      
-    //...   
-  }
-];
-
- ````
+```js  
+// Tells webpack that we are producing a bundle intended to run as electron's main entry point.
+target: "electron-main" 
+```
 
  # Update the developer server for Electron
 
  1. Update server.js to use the Electron main entry point
 
- ````
-//...
+> Replace the assignment of appWebpackConfig with the following.
 
-(function() {
-  //...
-
-  var appWebpackConfig = Object.assign(webpackConfig[1], { mode: "development"});
-
-  //...
-}
- ````
+```js
+var appWebpackConfig = Object.assign(webpackConfig[1], { mode: "development"});
+```
 
  # Update the build for Electron
 
 1. Add npm-run-all
 
-````
+```batchfile
 npm install --save-dev npm-run-all
-````
+```
 
-2. Update package.json
+2. Update package.json to use the main bundle.
 
-````
-{
-  //...
+> Replace the main statement with the following.
 
-  "main": "dist/main_bundle.js",
-  "scripts": {
-    "build:dev": "webpack --config webpack.config.js --mode development",
-    "build:prod": "webpack --config webpack.config.js --mode production",
-    "start:server": "node server.js",
-    "start:dev": "run-p start:server start",    
-    "start": "electron dist/main_bundle.js"
-  },
-````
+```json
+"main": "dist/main_bundle.js",
+```
+
+3. Update package.json to start electron.
+
+> Replace the scripts statement with the following.
+
+```json
+"build:dev": "webpack --config webpack.config.js --mode development",
+"build:prod": "webpack --config webpack.config.js --mode production",
+"start:server": "node server.js",
+"start:dev": "run-p start:server start",    
+"start": "electron dist/main_bundle.js"
+```
 
 # Verify the application works
 
 1. Build
 
-````
+```batchfile
 npm run build:dev
-````
+```
 
 2. Run
 
-````
+```batchfile
 npm start
-````
+```
 
 The electron application should launch and then when bundling is finished, 'Hello World!' should appear.
