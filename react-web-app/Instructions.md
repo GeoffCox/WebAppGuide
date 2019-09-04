@@ -31,7 +31,7 @@ These instructions focus on getting your project and build set up.  If you are u
 
 > Leave the command window open for later steps in this guide.
 
-```
+```batchfile
 mkdir react-web-app
 cd react-web-app
 npm init
@@ -50,7 +50,7 @@ dist
 
 1. Install Typescript locally and globally
 
-```
+```batchfile
 npm install typescript --save-dev
 npm install typescript --global
 ```
@@ -87,7 +87,7 @@ npm install typescript --global
 
 1. Install the React and React DOM packages along with their Typescript definitions.
 
-```
+```batchfile
 npm install --save react react-dom @types/react @types/react-dom
 ```
 
@@ -103,13 +103,13 @@ npm install --save react react-dom @types/react @types/react-dom
 
 1. Install webpack
 
-```
+```batchfile
 npm install --save-dev webpack webpack-cli
 ```
 
 2. Install webpack plugins and loaders
 
-```
+```batchfile
 npm install --save-dev html-webpack-plugin html-webpack-template
 npm install --save-dev awesome-typescript-loader 
 npm install --save-dev source-map-loader
@@ -254,7 +254,7 @@ node: {
 
 > Replace the test statement inside the scripts statement with the following.
 
-```
+```json
 "build:dev": "webpack --config webpack.config.js --mode development",
 "build:prod": "webpack --config webpack.config.js --mode production"
 ```
@@ -323,7 +323,7 @@ index.html
 
 1. Install express, middleware, and hmr
 
-```
+```batchfile
 npm install --save-dev express webpack-dev-middleware webpack-hot-middleware
 ```
 
@@ -490,13 +490,13 @@ if (module.hot) {
 
 1. Build
 
-```
+```batchfile
 npm run build:dev
 ```
 
 2. Start
 
-```
+```batchfile
 npm start
 ```
 
