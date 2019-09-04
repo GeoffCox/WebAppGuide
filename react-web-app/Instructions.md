@@ -5,7 +5,7 @@ This contains the steps to go from nothing to a ready-to-develop react web appli
 
 ## Prerequisites
 
-1. Node.js (https://nodejs.org) of v8.16.0 or later.
+1. Node.js (https://nodejs.org)
 2. Recommended: VSCode
 
 ## Sequence
