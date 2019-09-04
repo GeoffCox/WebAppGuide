@@ -1,7 +1,6 @@
-# React Web Application
+# React Web Application Guide
 
-# Getting Started
-This contains the steps to go from nothing to a ready-to-develop react web application.
+This contains the instructions to go from nothing to a ready-to-develop react web application.
 
 ## Prerequisites
 
@@ -48,10 +47,15 @@ dist
 
 # Add Typescript
 
-1. Install Typescript locally and globally
+1. Install Typescript
 
 ```batchfile
 npm install typescript --save-dev
+```
+
+> Optional: You can install Typescript globally to make it easier to run the compiler from the command line.  We'll be using webpack to run the compiler, so this isn't necessary for this project.
+
+```batchfile
 npm install typescript --global
 ```
 
