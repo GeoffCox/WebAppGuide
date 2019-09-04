@@ -33,9 +33,9 @@ module.exports = [
     // Source-map-loader will run on the JS files.
     module: {
       rules: [
-        // All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
+        // All files with a '.ts' extension will be handled by 'awesome-typescript-loader'.
         {
-          test: /\.tsx?$/,
+          test: /\.ts$/,
           loaders: ["awesome-typescript-loader"],
           exclude: /node_modules/
         },
@@ -65,7 +65,7 @@ module.exports = [
 
     // Tells webpack what file extesions it should look at.
     resolve: {
-      extensions: [".ts", ".tsx", ".js", ".json"]
+      extensions: [".ts", ".js", ".json"]
     },
 
     // Tells webpack that we are producing a bundle intended to run as electron's main entry poi.
