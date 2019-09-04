@@ -1,3 +1,9 @@
+<head>
+<style>
+.highlight-source-batchfile > pre { background-color: black; color: white}
+</style>
+</head>
+
 # React Web Application
 
 # Getting Started
