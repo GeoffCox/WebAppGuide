@@ -20,7 +20,7 @@ module.exports = [
     devtool: "source-map",
 
     // Tells webpack where start walking the dependencies to build a bundle.
-    // This can be multiple locations, but you can also have multiple module.exports
+    // This can be multiple locations, but you can also have multiple module.exports.
     entry: {
       main: join(__dirname, "src/main/index.ts")
     },
@@ -57,7 +57,7 @@ module.exports = [
       __filename: false
     },
 
-    // Tells webpack where to output the bundled javascript
+    // Tells webpack where to output the bundled javascript.
     output: {
       filename: "[name]_bundle.js",
       path: join(__dirname, "dist")

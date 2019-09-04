@@ -1,58 +1,49 @@
 # Electron React Web Application Guide
 
-This contains the steps update the react-web-app to run within Electron.
+This contains the steps update the react-web-app to run within electron.
 
 ## Sequence
 
-These instructions focus on adding Electron and reconfiguring webpack and HMR to work within Electron. Electron has a lot of additional capability for interacting with Windows, Apple, and Linux operating systems that is not covered here.  
+These instructions focus on adding electron and reconfiguring webpack and HMR to work within electron. electron has a lot of additional capability for interacting with Windows, Apple, and Linux operating systems that is not covered here.  
 
 Here's what we'll do in this guide:
 
 1. Add electron to the application.
-2. Restructure the source to separate the Electron and React pieces.
-3. Update webpack to have separate bundles for Electron and React.
+2. Restructure the source to separate the electron and react pieces.
+3. Update webpack to have separate bundles for electron and react.
 4. Update the HMR server to use the electron entry point.
 
-# Make a copy the React web application
+# Make a copy the react web application
 
 1. Start with a copy of the react-web-app
 
 2. Update package.json to rename the application.
 
+> Replace the name statement with the following.
+
 ```json
 {
   "name": "electron-react-web-app",
-
-  //...
 }
 ```
 
 3. Update webpack.config.js to rename the page title.
 
+> Replace the title statement within the HtmlWebpackPlugin with the following.
+
 ```js
-module.exports = {
-  //...
-
-  plugins: [
-      new webpack.HotModuleReplacementPlugin(),
-      new HtmlWebpackPlugin({
-        title: "electron-react-web-app",
-
-        //...
-        })
-    ],
-};
+title: "electron-react-web-app",
 ```
 
-# Add Electron
+# Add electron
 
-1. Install Electron
+1. Install electron
 
 ```batchfile
 npm install electron --save
 ```
 
-# Separate the React application from Electron main
+# Separate the react application from electron main
 
 1. Create app and main subfolders under src/
 
@@ -72,28 +63,28 @@ npm install electron --save
 
 > It is important to notice that module.exports changes from an single entry point object to an array of entry points.
 
-> Move everything that was in the previous entry point into the to the React application entry point.
+> Move everything that was in the previous entry point into the to the react application entry point.
 
 ```js
 module.exports = [
-  // --- Electron Main ---
+  // --- electron Main ---
   {},
-  //--- React Application ---
+  //--- react Application ---
   {
     //...
   }
 ];
 ```
 
-# Create the Electron main function
+# Create the electron main function
 
 1. Create src/main/main.ts
 
-> This main function uses Electron to create a browser-enabled window that will host the React application. 
+> This main function uses electron to create a browser-enabled window that will host the react application. 
 
 > When running in development mode, it will use the web page from the HMR server.js.
 
-> The main function handles events to help the application quit when the react application window is closed.
+> The main function handles events to exit the application when the react application window is closed.
 
 1. Create src/main/main.ts
 
@@ -152,9 +143,11 @@ import Main from "./main";
 Main.main(app, BrowserWindow);
 ```
 
-# Update webpack / React Application export
+# Update webpack / react application export
 
-> Each of these steps targets the React application export within module.exports.  The Electron export remains empty until later.
+> Each of these steps targets the react application export within module.exports.  
+
+> The electron export remains empty until later.
 
 1. Update webpack.config.js to use src/app/index.tsx
 
@@ -169,7 +162,7 @@ entry: {
 },
 ```
 
-3. Update webpack.config.js to bundle using the entry point name
+2. Update webpack.config.js to bundle using the entry point name
 
 > Replace the output statement with the following.
 
@@ -181,7 +174,7 @@ output: {
 },
 ```    
 
-3. Update webpack.config.js target the Electron render process
+3. Update webpack.config.js target the electron render process
 
 > Add the following after the resolve statement.
 
@@ -189,18 +182,20 @@ output: {
 target: "electron-renderer"
 ```
 
-# Update webpack / Electron main export
+# Update webpack / electron main export
 
-> Each of these steps targets the Electron application export within module.exports
+> Each of these steps targets the electron application export within module.exports
 
-1. Update webpack.config.js to add entry and output for Electron main
+1. Update webpack.config.js to add entry and output for electron main
 
 ```js
+// Tells webpack where start walking the dependencies to build a bundle.
+// This can be multiple locations, but you can also have multiple module.exports.
 entry: {
   main: join(__dirname, "src/main/index.ts")      
 },
 
-// Tells webpack where to output the bundled javascript
+// Tells webpack where to output the bundled javascript.
 output: {
   filename: "[name]_bundle.js",
   path: join(__dirname, "dist")
@@ -269,9 +264,9 @@ node: {
 target: "electron-main" 
 ```
 
- # Update the developer server for Electron
+ # Update the developer server for electron
 
- 1. Update server.js to use the Electron main entry point
+ 1. Update server.js to use the electron main entry point
 
 > Replace the assignment of appWebpackConfig with the following.
 
@@ -279,9 +274,9 @@ target: "electron-main"
 var appWebpackConfig = Object.assign(webpackConfig[1], { mode: "development"});
 ```
 
- # Update the build for Electron
+ # Update the build for electron
 
-1. Add npm-run-all
+1. Install the npm-run-all package
 
 ```batchfile
 npm install --save-dev npm-run-all
@@ -322,3 +317,5 @@ npm start
 ```
 
 The electron application should launch and then when bundling is finished, 'Hello World!' should appear.
+
+If you modify any react application code and save, you should see HMR cause a recompile and the UI refresh automatically.  However, changes to the electron main function require a complete application restart as they are outside the HMR web server scope.
