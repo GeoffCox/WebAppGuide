@@ -428,7 +428,7 @@ new webpack.HotModuleReplacementPlugin(),
 "start": "node server.js"
 ```
 
-# Add HMR aware React Components
+# Add HMR aware React components
 
 1. Create src/components/App.tsx
 
@@ -490,7 +490,7 @@ if (module.hot) {
 }
 ```
 
-# Verify application with HMR works
+# Verify HMR is working properly
 
 > The Chrome browser works with HMR to refresh the page automatically, but the Edge browser does not.  I recommend using Chrome to verify HMR is working properly.
 
