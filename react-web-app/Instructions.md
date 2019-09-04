@@ -12,7 +12,7 @@ This contains the instructions to go from nothing to a ready-to-develop react we
 These instructions focus on getting your project and build set up.  If you are used to a complete integrated experience like Visual Studio and .NET development, then the distributed and disconnected nature of web development can be a shock and a barrier to getting started.  Here's what we'll do in this guide:
 
 1. Create the initial web application using Node Package Manager (NPM).  NPM is called from the command-line throughout this guide to download and add packages to your project.  Packages can be source code libraries for the application, but also scripts and tools for the build process.
-2. Install and configure the Typescript compile.
+2. Install and configure the Typescript compile.  Typescript gives us compile-time type safety as well as some powerful syntatic sugar for generating good Javascript.
 3. Add the React framework to the project so we can create UI component.
 4. Add and configure Webpack so we can have a build that compiles Typescript, bundles Javascript, provides debugging source maps, and creates our HTML home page for the applicaiton.
 5. Write some very basic React components so we can see the application working.
@@ -92,7 +92,8 @@ npm install typescript --global
 1. Install the React and React DOM packages along with their Typescript definitions.
 
 ```batchfile
-npm install --save react react-dom @types/react @types/react-dom
+npm install --save react react-dom
+npm install --save-dev @types/react @types/react-dom
 ```
 
 2. Update tsconfig.json to support JSX
@@ -333,7 +334,9 @@ npm install --save-dev express webpack-dev-middleware webpack-hot-middleware
 
 # Create dev server to support HMR
 
-1. Create server.js with a immediately executing function (IEF)
+1. Create server.js with a immediately executing function (IEF).
+
+> By having a function that runs when the file is loaded, we can start the web server by just running node and pointing at the file.
 
 ```js
 (function() {
