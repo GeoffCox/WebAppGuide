@@ -7,8 +7,14 @@ However, cost is figuring out how to connect all these disparate, ever-changing 
 
 I've provided completed examples with instructions for every single thing I did to create the applications.
 
-* [React Web Application](react-web-app/Instructions.md)
-* [Electron/React Web Application](electron-react-web-app/Instructions.md)
+## [React Web Application](react-web-app/Readme.md)
+A React application using Typescript, Webpack, and Hot Module Reloading
+
+## [Electron/React Web Application](electron-react-web-app/Readme.md)
+React application hosted in Electron
+
+## [Memory-Game](memory-game/Readme.md)
+A game for 2 players trying to match pairs of cards.  A React/Electron application using MobX and TypeStyle
 
 
  # Technology Choices
