@@ -47,7 +47,7 @@ npm install electron --save
 
 1. Create app and main subfolders under src/
 
-> Move everything that was previously under src/ within the app/ subfolder.
+Move everything that was previously under src/ within the app/ subfolder.
 
 ```
     src/
@@ -61,9 +61,7 @@ npm install electron --save
 
 2. Update webpack.config.js to create two entry points for webpack: one for electron main and one for the react application.
 
-> It is important to notice that module.exports changes from an single entry point object to an array of entry points.
-
-> Move everything that was in the previous entry point into the to the react application entry point.
+It is important to notice that module.exports changes from an single entry point object to an array of entry points. Move everything that was in the previous entry point into the to the react application entry point.
 
 ```js
 module.exports = [
@@ -80,11 +78,9 @@ module.exports = [
 
 1. Create src/main/main.ts
 
-> This main function uses electron to create a browser-enabled window that will host the react application. 
-
-> When running in development mode, it will use the web page from the HMR server.js.
-
-> The main function handles events to exit the application when the react application window is closed.
+This main function uses electron to create a browser-enabled window that will host the react application.
+When running in development mode, it will use the web page from the HMR server.js.
+The main function handles events to exit the application when the react application window is closed.
 
 1. Create src/main/main.ts
 
@@ -145,13 +141,12 @@ Main.main(app, BrowserWindow);
 
 # Update webpack / react application export
 
-> Each of these steps targets the react application export within module.exports.  
-
-> The electron export remains empty until later.
+Each of these steps targets the react application export within module.exports.  
+The electron export remains empty until later.
 
 1. Update webpack.config.js to use src/app/index.tsx
 
-> Replace the entry statement with the following:
+Replace the entry statement with the following:
 
 ```js
 entry: {
@@ -164,7 +159,7 @@ entry: {
 
 2. Update webpack.config.js to bundle using the entry point name
 
-> Replace the output statement with the following.
+Replace the output statement with the following.
 
 ```js
 // Tells webpack where to output the bundled javascript
@@ -176,7 +171,7 @@ output: {
 
 3. Update webpack.config.js target the electron render process
 
-> Add the following after the resolve statement.
+Add the following after the resolve statement.
 
 ```js
 target: "electron-renderer"
@@ -184,7 +179,7 @@ target: "electron-renderer"
 
 # Update webpack / electron main export
 
-> Each of these steps targets the electron application export within module.exports
+Each of these steps targets the electron application export within module.exports
 
 1. Update webpack.config.js to add entry and output for electron main
 
@@ -204,7 +199,7 @@ output: {
 
  2. Update webpack.config.js to add typescript and source-map loaders
 
-> Add the following after the output statement.
+Add the following after the output statement.
 
 ```js
 // Tells webpack what kind of source maps to produce.
@@ -240,7 +235,7 @@ resolve: {
 
  3. Update webpack.config.js to add development and bundling configuration
  
-> Add the following after the resolve statement.
+Add the following after the resolve statement.
 
 ```js
 // When the env is "development", this tells webpack to provide debuggable information in the source maps and turns off some optimizations.
@@ -257,7 +252,7 @@ node: {
 
  4. Update webpack.config.js to target electron main.
 
-> Add the following after the node statement.
+Add the following after the node statement.
 
 ```js  
 // Tells webpack that we are producing a bundle intended to run as electron's main entry point.
@@ -268,7 +263,7 @@ target: "electron-main"
 
  1. Update server.js to use the electron main entry point
 
-> Replace the assignment of appWebpackConfig with the following.
+Replace the assignment of appWebpackConfig with the following.
 
 ```js
 var appWebpackConfig = Object.assign(webpackConfig[1], { mode: "development"});
@@ -284,7 +279,7 @@ npm install --save-dev npm-run-all
 
 2. Update package.json to use the main bundle.
 
-> Replace the main statement with the following.
+Replace the main statement with the following.
 
 ```json
 "main": "dist/main_bundle.js",
@@ -292,7 +287,7 @@ npm install --save-dev npm-run-all
 
 3. Update package.json to start electron.
 
-> Replace the scripts statement with the following.
+Replace the scripts statement with the following.
 
 ```json
 "build:dev": "webpack --config webpack.config.js --mode development",
