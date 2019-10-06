@@ -19,7 +19,7 @@ Here's what we'll do in this guide:
 
 2. Update package.json to rename the application.
 
-> Replace the name statement with the following.
+Replace the name statement with the following.
 
 ```json
 {
@@ -29,7 +29,7 @@ Here's what we'll do in this guide:
 
 3. Update webpack.config.js to rename the page title.
 
-> Replace the title statement within the HtmlWebpackPlugin with the following.
+Replace the title statement within the HtmlWebpackPlugin with the following.
 
 ```js
 title: "electron-react-web-app",
