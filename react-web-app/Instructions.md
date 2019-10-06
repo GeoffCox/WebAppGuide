@@ -22,13 +22,10 @@ These instructions focus on getting your project and build set up.  If you are u
 
 1. Create the directory and initialize package.json
 
-> Use the command line to execute these commands.
-
-> You can create a folder of any name you like this will be your project name too.
-
-> Accept the defaults during npm init.
-
-> Leave the command window open for later steps in this guide.
+Use the command line to execute these commands.
+You can create a folder of any name you like this will be your project name too.
+Accept the defaults during npm init.
+Leave the command window open for later steps in this guide.
 
 ```batchfile
 mkdir react-web-app
@@ -38,7 +35,7 @@ npm init
 
 2. Add the .gitignore file
 
-> Add this file in the same folder as package.json.
+Add this file in the same folder as package.json.
 
 ```gitconfig
 node_modules
@@ -53,7 +50,7 @@ dist
 npm install typescript --save-dev
 ```
 
-> Optional: You can install Typescript globally to make it easier to run the compiler from the command line.  We'll be using webpack to run the compiler, so this isn't necessary for this project.
+Optional: You can install Typescript globally to make it easier to run the compiler from the command line.  We'll be using webpack to run the compiler, so this isn't necessary for this project.
 
 ```batchfile
 npm install typescript --global
@@ -61,9 +58,7 @@ npm install typescript --global
 
 2. Create tsconfig.json
 
-> Notice that strict is true which enforces the best Typescript standards.
-
-> In addition, I like to turn on additional rules that aren't yet part of strict.
+Notice that strict = true which enforces the best Typescript standards. Plus additional rules that aren't yet part of strict are enabled to improve the code quality.
 
 ```json
 {
@@ -98,7 +93,7 @@ npm install --save-dev @types/react @types/react-dom
 
 2. Update tsconfig.json to support JSX
 
-> Add the following within the compilerOptions statement.
+Add the following within the compilerOptions statement.
 
 ```json
 "jsx": "react"
@@ -124,7 +119,7 @@ npm install --save-dev source-map-loader
 
 1. Create webpack.config.js with an empty module.exports.
 
-> Create this file in the same folder as package.json.
+Create this file in the same folder as package.json.
 
 ```js
 // This is the object webpack looks at for configuration.
@@ -135,7 +130,7 @@ module.exports = {};
 
 2. Update webpack.config.js to import the path join function.
 
-> Add the following before the module.exports statement.
+Add the following before the module.exports statement.
 
 ```js
 const { join } = require("path");
@@ -143,9 +138,8 @@ const { join } = require("path");
 
 3. Update webpack.config.js add entry and output statements.
 
-> Add the following inside the module.exports statement.
-
-> Don't worry about the trailing comma after the output statement. We'll be adding more stuff within module.exports.
+Add the following inside the module.exports statement. 
+Don't worry about the trailing comma after the output statement. We'll be adding more stuff within module.exports.
 
 ```js
 // Tells webpack where start walking the dependencies to build a bundle.
@@ -160,7 +154,7 @@ output: {
 
 4. Update webpack.config.js to add typescript and source-map loaders
 
-> Add the following inside the module.exports statement after the output statement.
+Add the following inside the module.exports statement after the output statement.
 
 ```js
 // Tells webpack what kind of source maps to produce.
@@ -188,7 +182,7 @@ resolve: {
 
 5. Update webpack.config.js to import HTML webpack plugins.
 
-> Add the following before the module.exports statement after the path join require statement.
+Add the following before the module.exports statement after the path join require statement.
 
 ```js
 const HtmlWebpackPlugin = require("html-webpack-plugin");
@@ -203,7 +197,7 @@ const packageJson = require('./package.json');
 
 5. Update webpack.config.js to add the HTML plugin configuration.
 
-> Add the following inside the module.exports statement after the resolve statement.
+Add the following inside the module.exports statement after the resolve statement.
 
 ```js
 // Tells the HTML webpack plug-in to use a template and emit dist/index.html
@@ -223,7 +217,7 @@ plugins: [
 
 6. Update webpack.config to handle React as an external library
 
-> Add the following inside the module.exports statement after the plugins statement.
+Add the following inside the module.exports statement after the plugins statement.
 
 ```js
 // When importing a module whose path matches one of the following, just
@@ -238,7 +232,7 @@ externals: {
 
 7. Update webpack.config.js to add development and bundling configuration
 
-> Add the following inside the module.exports statement after the externals statement.
+Add the following inside the module.exports statement after the externals statement.
 
 ```js
 // When the env is "development", this tells webpack to provide debuggable information in the source maps and turns off some optimizations.
@@ -257,7 +251,7 @@ node: {
 
 1. Update package.json with build script commands.
 
-> Replace the test statement inside the scripts statement with the following.
+Replace the test statement inside the scripts statement with the following.
 
 ```json
 "build:dev": "webpack --config webpack.config.js --mode development",
@@ -268,7 +262,7 @@ node: {
 
 1. Create folder structure
 
-> Create the src folder in the same folder as package.json.
+Create the src folder in the same folder as package.json.
 
 ```
 src/
@@ -277,7 +271,7 @@ src/
 
 2. Create src/components/Greeting.tsx
 
-> While writing components in React hooks is the latest technique, we'll stick with the old class structure as it feel more familiar to those coming from other languages.
+While writing components in React hooks is the latest technique, we'll stick with the old class structure as it feel more familiar to those coming from other languages.
 
 ```tsx
 import * as React from "react";
@@ -293,7 +287,7 @@ export class Greeting extends React.Component<GreetingProps, {}> {
 
 3. Create src/index.tsx
 
-> Notice the HTML element with id='app' matches the configuration of the HTML webpack plugin in webpack.config.js.
+Notice the HTML element with id='app' matches the configuration of the HTML webpack plugin in webpack.config.js.
 
 ```tsx
 import * as React from "react";
@@ -336,7 +330,7 @@ npm install --save-dev express webpack-dev-middleware webpack-hot-middleware
 
 1. Create server.js with a immediately executing function (IEF).
 
-> By having a function that runs when the file is loaded, we can start the web server by just running node and pointing at the file.
+By having a function that runs when the file is loaded, we can start the web server by just running node and pointing at the file.
 
 ```js
 (function() {
@@ -345,7 +339,7 @@ npm install --save-dev express webpack-dev-middleware webpack-hot-middleware
 
 2. Update server.js to compile using webpack
 
-> Add the following within the function.
+Add the following within the function.
 
 ```js
 // Create & configure a webpack compiler
@@ -359,7 +353,7 @@ var compiler = webpack(appWebpackConfig);
 
 3. Update server.js to wire up the middleware
 
-> Add the following within the function and after the compiler variable declaration.
+Add the following within the function and after the compiler variable declaration.
 
 ```js
 // Attach the dev middleware to the compiler & the server
@@ -379,7 +373,7 @@ app.use(require("webpack-hot-middleware")(compiler));
 
 4. Update server.js to host the application on a server and port
 
-> Add the following after the function.
+Add the following after the function.
 
 ```js
 if (require.main === module) {
@@ -394,7 +388,7 @@ if (require.main === module) {
 
 1. Update webpack.config.js to add MHR middleware to the entry point.
 
-> Replace the entry statement inside module.exports with the following.
+Replace the entry statement inside module.exports with the following.
 
 ```js
 // Tells webpack where start walking the dependencies to build a bundle.
@@ -407,7 +401,7 @@ entry: {
 ```
 2. Update webpack.config.js to add webpack imports.
 
-> Add the following before the module.exports statement
+Add the following before the module.exports statement
 
 ```js
 var webpack = require('webpack');
@@ -415,7 +409,7 @@ var webpack = require('webpack');
 
 3. Update webpack.config.js to add HMR middleware to the plugins
 
-> Add the following inside the module.exports plugins statement as the first entry in the array of plugins.
+Add the following inside the module.exports plugins statement as the first entry in the array of plugins.
 
 ```js
 new webpack.HotModuleReplacementPlugin(),
@@ -425,7 +419,7 @@ new webpack.HotModuleReplacementPlugin(),
 
 1. Update package.json to add start:dev script
 
-> Add the following within the scripts statement after the build:dev and build:prod statements.
+Add the following within the scripts statement after the build:dev and build:prod statements.
 
 ```json
 "start": "node server.js"
@@ -452,7 +446,7 @@ export class App extends React.Component<{}, {}> {
 
 2. Update index.tsx to support HMR
 
-> Replace the code in index.tsx with the following.
+Replace the code in index.tsx with the following.
 
 ```tsx
 import * as React from "react";
@@ -495,7 +489,7 @@ if (module.hot) {
 
 # Verify HMR is working properly
 
-> The Chrome browser works with HMR to refresh the page automatically, but the Edge browser does not.  I recommend using Chrome to verify HMR is working properly.
+The Chrome browser works with HMR to refresh the page automatically, but the Edge browser does not.  I recommend using Chrome to verify HMR is working properly.
 
 1. Build
 
