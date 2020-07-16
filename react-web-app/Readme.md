@@ -254,8 +254,8 @@ node: {
 Replace the test statement inside the scripts statement with the following.
 
 ```json
-"build:dev": "webpack --config webpack.config.js --mode development",
-"build:prod": "webpack --config webpack.config.js --mode production"
+"build-dev": "webpack --config webpack.config.js --mode development",
+"build-prod": "webpack --config webpack.config.js --mode production"
 ```
 
 # Create React Components
@@ -306,7 +306,7 @@ ReactDOM.render(
 1. Build
 
 ```batchfile
-npm run build:dev
+npm run build-dev
 ```
 
 2. Open in a browser
@@ -419,7 +419,7 @@ new webpack.HotModuleReplacementPlugin(),
 
 1. Update package.json to add start:dev script
 
-Add the following within the scripts statement after the build:dev and build:prod statements.
+Add the following within the scripts statement after the build-dev and build-prod statements.
 
 ```json
 "start": "node server.js"
@@ -494,7 +494,7 @@ The Chrome browser works with HMR to refresh the page automatically, but the Edg
 1. Build
 
 ```batchfile
-npm run build:dev
+npm run build-dev
 ```
 
 2. Start
