@@ -9,10 +9,10 @@ This contains the instructions to go from nothing to a ready-to-develop react we
 
 ## Sequence
 
-These instructions focus on getting your project and build set up.  If you are used to a complete integrated experience like Visual Studio and .NET development, then the distributed and disconnected nature of web development can be a shock and a barrier to getting started.  Here's what we'll do in this guide:
+These instructions focus on getting your project and build set up. If you are used to a complete integrated experience like Visual Studio and .NET development, then the distributed and disconnected nature of web development can be a shock and a barrier to getting started. Here's what we'll do in this guide:
 
-1. Create the initial web application using Node Package Manager (NPM).  NPM is called from the command-line throughout this guide to download and add packages to your project.  Packages can be source code libraries for the application, but also scripts and tools for the build process.
-2. Install and configure the Typescript compile.  Typescript gives us compile-time type safety as well as some powerful syntatic sugar for generating good Javascript.
+1. Create the initial web application using Node Package Manager (NPM). NPM is called from the command-line throughout this guide to download and add packages to your project. Packages can be source code libraries for the application, but also scripts and tools for the build process.
+2. Install and configure the Typescript compile. Typescript gives us compile-time type safety as well as some powerful syntatic sugar for generating good Javascript.
 3. Add the React framework to the project so we can create UI component.
 4. Add and configure Webpack so we can have a build that compiles Typescript, bundles Javascript, provides debugging source maps, and creates our HTML home page for the applicaiton.
 5. Write some very basic React components so we can see the application working.
@@ -50,7 +50,7 @@ dist
 npm install typescript --save-dev
 ```
 
-Optional: You can install Typescript globally to make it easier to run the compiler from the command line.  We'll be using webpack to run the compiler, so this isn't necessary for this project.
+Optional: You can install Typescript globally to make it easier to run the compiler from the command line. We'll be using webpack to run the compiler, so this isn't necessary for this project.
 
 ```batchfile
 npm install typescript --global
@@ -67,7 +67,7 @@ Notice that strict = true which enforces the best Typescript standards. Plus add
     "experimentalDecorators": true,
     "module": "commonjs",
     "moduleResolution": "node",
-    "outDir": "./dist/", 
+    "outDir": "./dist/",
     "noFallthroughCasesInSwitch": true,
     "noImplicitReturns": true,
     "noUnusedLocals": true,
@@ -76,9 +76,7 @@ Notice that strict = true which enforces the best Typescript standards. Plus add
     "strict": true,
     "target": "es6"
   },
-  "include": [
-    "./src/**/*"
-  ]
+  "include": ["./src/**/*"]
 }
 ```
 
@@ -111,7 +109,7 @@ npm install --save-dev webpack webpack-cli
 
 ```batchfile
 npm install --save-dev html-webpack-plugin html-webpack-template
-npm install --save-dev awesome-typescript-loader 
+npm install --save-dev awesome-typescript-loader
 npm install --save-dev source-map-loader
 ```
 
@@ -138,7 +136,7 @@ const { join } = require("path");
 
 3. Update webpack.config.js add entry and output statements.
 
-Add the following inside the module.exports statement. 
+Add the following inside the module.exports statement.
 Don't worry about the trailing comma after the output statement. We'll be adding more stuff within module.exports.
 
 ```js
@@ -192,7 +190,7 @@ const HtmlWebpackTemplate = require("html-webpack-template");
 // that we want to make external.  Parsing the package.json
 // makes it automatic to keep the package version in sync with
 // the CDN URL used in the HtmlWebpackPlugin
-const packageJson = require('./package.json');
+const packageJson = require("./package.json");
 ```
 
 5. Update webpack.config.js to add the HTML plugin configuration.
@@ -247,15 +245,15 @@ node: {
 }
 ```
 
-# Update build to use  webpack
+# Update build to use webpack
 
 1. Update package.json with build script commands.
 
 Replace the test statement inside the scripts statement with the following.
 
 ```json
-"build-dev": "webpack --config webpack.config.js --mode development",
-"build-prod": "webpack --config webpack.config.js --mode production"
+"build:dev": "webpack --config webpack.config.js --mode development",
+"build:prod": "webpack --config webpack.config.js --mode production"
 ```
 
 # Create React Components
@@ -266,7 +264,7 @@ Create the src folder in the same folder as package.json.
 
 ```
 src/
-  components/    
+  components/
 ```
 
 2. Create src/components/Greeting.tsx
@@ -276,12 +274,14 @@ While writing components in React hooks is the latest technique, we'll stick wit
 ```tsx
 import * as React from "react";
 
-export interface GreetingProps { name: string }
+export interface GreetingProps {
+  name: string;
+}
 
 export class Greeting extends React.Component<GreetingProps, {}> {
-    render() {
-        return <h1>Hello {this.props.name}!</h1>;
-    }
+  render() {
+    return <h1>Hello {this.props.name}!</h1>;
+  }
 }
 ```
 
@@ -295,10 +295,7 @@ import * as ReactDOM from "react-dom";
 
 import { Greeting } from "./components/Greeting";
 
-ReactDOM.render(
-    <Greeting name="World" />,
-    document.getElementById("app")
-);
+ReactDOM.render(<Greeting name="World" />, document.getElementById("app"));
 ```
 
 # Verify the application works
@@ -306,7 +303,7 @@ ReactDOM.render(
 1. Build
 
 ```batchfile
-npm run build-dev
+npm run build:dev
 ```
 
 2. Open in a browser
@@ -333,8 +330,7 @@ npm install --save-dev express webpack-dev-middleware webpack-hot-middleware
 By having a function that runs when the file is loaded, we can start the web server by just running node and pointing at the file.
 
 ```js
-(function() {
-})();  
+(function () {})();
 ```
 
 2. Update server.js to compile using webpack
@@ -343,12 +339,14 @@ Add the following within the function.
 
 ```js
 // Create & configure a webpack compiler
-var webpack = require('webpack');
-var webpackConfig = require(process.env.WEBPACK_CONFIG ? process.env.WEBPACK_CONFIG : './webpack.config.js');
+var webpack = require("webpack");
+var webpackConfig = require(process.env.WEBPACK_CONFIG
+  ? process.env.WEBPACK_CONFIG
+  : "./webpack.config.js");
 
 // Configure to always run in development mode when running local server
-var appWebpackConfig = Object.assign(webpackConfig, { mode: "development"});
-var compiler = webpack(appWebpackConfig); 
+var appWebpackConfig = Object.assign(webpackConfig, { mode: "development" });
+var compiler = webpack(appWebpackConfig);
 ```
 
 3. Update server.js to wire up the middleware
@@ -357,15 +355,17 @@ Add the following within the function and after the compiler variable declaratio
 
 ```js
 // Attach the dev middleware to the compiler & the server
-app.use(require("webpack-dev-middleware")(compiler, {
-  headers: {
-      "Access-Control-Allow-Origin": "*"
-  }, 
-  lazy: false,
-  publicPath: appWebpackConfig.output.publicPath,
-  noInfo: false,
-  stats: { colors: true }
-}));
+app.use(
+  require("webpack-dev-middleware")(compiler, {
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+    },
+    lazy: false,
+    publicPath: appWebpackConfig.output.publicPath,
+    noInfo: false,
+    stats: { colors: true },
+  })
+);
 
 // Attach the hot middleware to the compiler & the server
 app.use(require("webpack-hot-middleware")(compiler));
@@ -378,7 +378,7 @@ Add the following after the function.
 ```js
 if (require.main === module) {
   var server = http.createServer(app);
-  server.listen(process.env.PORT || 3000, function() {
+  server.listen(process.env.PORT || 3000, function () {
     console.log("Listening on %j", server.address());
   });
 }
@@ -394,17 +394,18 @@ Replace the entry statement inside module.exports with the following.
 // Tells webpack where start walking the dependencies to build a bundle.
 entry: {
   app: [
-    "webpack-hot-middleware/client", 
+    "webpack-hot-middleware/client",
     join(__dirname, "src/index.tsx")
   ]
 },
 ```
+
 2. Update webpack.config.js to add webpack imports.
 
 Add the following before the module.exports statement
 
 ```js
-var webpack = require('webpack');
+var webpack = require("webpack");
 ```
 
 3. Update webpack.config.js to add HMR middleware to the plugins
@@ -419,7 +420,7 @@ new webpack.HotModuleReplacementPlugin(),
 
 1. Update package.json to add start:dev script
 
-Add the following within the scripts statement after the build-dev and build-prod statements.
+Add the following within the scripts statement after the build:dev and build:prod statements.
 
 ```json
 "start": "node server.js"
@@ -489,12 +490,12 @@ if (module.hot) {
 
 # Verify HMR is working properly
 
-The Chrome browser works with HMR to refresh the page automatically, but the Edge browser does not.  I recommend using Chrome to verify HMR is working properly.
+The Chrome browser works with HMR to refresh the page automatically, but the Edge browser does not. I recommend using Chrome to verify HMR is working properly.
 
 1. Build
 
 ```batchfile
-npm run build-dev
+npm run build:dev
 ```
 
 2. Start
@@ -507,5 +508,4 @@ npm start
 
 4. Modify src/App.tsx and change 'World' to 'HMR'. Save the changes.
 
-5. Verify 'Hello HMR!' now appears in the browser (without having to refresh) 
-
+5. Verify 'Hello HMR!' now appears in the browser (without having to refresh)
