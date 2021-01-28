@@ -29,7 +29,7 @@
     "webpack-hot-middleware": "^2.25.0"
   },
   "dependencies": {
-    "electron": "^6.0.2",
+    "electron": "^9.4.0",
     "lodash": "^4.17.20",
     "mobx": "^5.13.0",
     "mobx-react": "^6.1.3",
