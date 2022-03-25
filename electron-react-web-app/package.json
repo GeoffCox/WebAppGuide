@@ -28,7 +28,7 @@
     "webpack-hot-middleware": "^2.25.0"
   },
   "dependencies": {
-    "electron": "^6.0.2",
+    "electron": "^13.6.6",
     "react": "^16.8.6",
     "react-dom": "^16.8.6"
   }
